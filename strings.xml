@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CountriesApplication</string>
+    <string name="msg_label">Welcome to Countries Swipe to Delete App 2018</string>
+    <string name="msg_text_view">this is </string>
+    <string name="msg_lang_icon">Icon for Language</string>
+    <string name="msg_currency_icon">Icon for Currency</string>
+    <string name="error_msg">Error as a result of : </string>
+    <string name = "msg_internet_connected">Stable Internet Connection </string>
+    <string name = "error_msg_connected">Oops ! ! No Internet Connection </string>
+
+
+</resources>
