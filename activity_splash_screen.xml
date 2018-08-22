@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Linear Layout view group holding the two views image and text view in horizontal format-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context="com.currencyapp.samuel.currencyapplication.SplashScreenActivity">
+
+    <!--Image view xml showing the brand loggo as the case may be-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/image_height_margin"
+        android:scaleType="fitXY"
+        android:src="@drawable/wafer_icon"
+        android:layout_weight="1"/>
+
+    <!--TextView widget giving a brief description about our brand-->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="@string/msg_label"
+        />
+
+</LinearLayout>
