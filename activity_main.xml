@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--the view group relative layout is used to house other views-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.currencyapp.samuel.currencyapplication.MainActivity">
+    <!--the  list view  used to render our result-->
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns = "2"
+        android:orientation="vertical"
+        android:id = "@+id/lv_country"
+        android:layout_margin="@dimen/activity_lay_margin"/>
+    <!--the progress bar widget used to show loading indicator-->
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress_bar_country"
+        android:layout_centerInParent="true"/>
+    <!--the text view used to show internet connectivity state-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:layout_centerInParent="true"
+        android:fontFamily="sans-serif-smallcaps"
+        android:id="@+id/text_view_error_display"/>
+
+
+
+</RelativeLayout>
