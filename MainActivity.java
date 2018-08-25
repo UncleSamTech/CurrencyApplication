@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private ConnectivityManager connMgr;
     private CountrySwipeToDeleteClass swipeToDeleteClass;
     private FrameLayout frame;
-int frame_id = R.id.frame_lay;
+
 
 
     @Override
@@ -100,7 +100,7 @@ int frame_id = R.id.frame_lay;
 
     /**
      * A private class which extends from AsyncTask is created to handle all the network request on
-     * a different thread
+     * a different thread. This is to avoid freezing the UI thread
      * it handles network request in the doInBackground method, fetches the data and
      * returns it as an array list of strings
      * the result is then passed on the main thread in the onPostExecute method
