@@ -3,15 +3,26 @@ package com.currencyapp.samuel.currencyapplication.ControllerClass;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.currencyapp.samuel.currencyapplication.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,14 +38,14 @@ public class CountrySwipeToDeleteClass implements View.OnTouchListener {
     private int mMinFlingVelocity;
     private int mMaxFlingVelocity;
     private long mAnimationTime;
-
+private long ANIMATION_FA = 200;
     // Fixed properties
     private ListView mListView;
     private DismissCallbacks mCallbacks;
     private int mViewWidth = 1;
 
     // Transient properties
-    private ArrayList<PendingDismissData> mPendingDismisses = new ArrayList<PendingDismissData>();
+    private ArrayList<PendingDismissData> mPendingDismisses = new ArrayList<>();
     private int mDismissAnimationRefCount = 0;
     private float mDownX;
     private float mDownY;
@@ -42,17 +53,30 @@ public class CountrySwipeToDeleteClass implements View.OnTouchListener {
     private int mSwipingSlop;
     private VelocityTracker mVelocityTracker;
     private int mDownPosition;
+    private View v;
     private View mDownView;
     private boolean mPaused;
+    private FrameLayout frameLayout;
 
-    public CountrySwipeToDeleteClass(ListView listView, DismissCallbacks callbacks) {
+
+    //view id
+
+
+
+
+    public CountrySwipeToDeleteClass(ListView listView,  DismissCallbacks callbacks) {
         ViewConfiguration vc = ViewConfiguration.get(listView.getContext());
         mSlop = vc.getScaledTouchSlop();
         mMinFlingVelocity = vc.getScaledMinimumFlingVelocity() * 16;
         mMaxFlingVelocity = vc.getScaledMaximumFlingVelocity();
         mAnimationTime = listView.getContext().getResources().getInteger(
                 android.R.integer.config_shortAnimTime);
+
         mListView = listView;
+
+       //this.frameId = frameId;
+
+
         mCallbacks = callbacks;
     }
 
@@ -67,15 +91,25 @@ public class CountrySwipeToDeleteClass implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
+        v = view;
+        if(frameLayout==null && v !=null){
+            frameLayout = v.findViewById(R.id.frame_lay);
+        }
+
+
+
+
         if (mViewWidth < 2) {
             mViewWidth = mListView.getWidth();
         }
+
 
         switch (motionEvent.getActionMasked()) {
             case MotionEvent.ACTION_DOWN: {
                 if (mPaused) {
                     return false;
                 }
+
 
                 // TODO: ensure this is a finger, and set a flag
 
@@ -130,6 +164,7 @@ public class CountrySwipeToDeleteClass implements View.OnTouchListener {
                 mDownView = null;
                 mDownPosition = ListView.INVALID_POSITION;
                 mSwiping = false;
+                frameLayout = null;
                 break;
             }
 
@@ -160,6 +195,9 @@ public class CountrySwipeToDeleteClass implements View.OnTouchListener {
                     final View downView = mDownView; // mDownView gets null'd before animation ends
                     final int downPosition = mDownPosition;
                     ++mDismissAnimationRefCount;
+                    try{
+                        frameLayout = mDownView.findViewById(R.id.frame_lay);
+                        frameLayout.animate().alpha(1).setDuration(ANIMATION_FA);}catch(NullPointerException nu){Log.e("This Class", "Error as a result of : " + nu.getMessage());}
                     mDownView.animate()
                             .translationX(dismissRight ? mViewWidth : -mViewWidth)
                             .alpha(0)
@@ -185,21 +223,32 @@ public class CountrySwipeToDeleteClass implements View.OnTouchListener {
                 mDownView = null;
                 mDownPosition = ListView.INVALID_POSITION;
                 mSwiping = false;
+                frameLayout = null;
                 break;
             }
 
             case MotionEvent.ACTION_MOVE: {
+
+
+
                 if (mVelocityTracker == null || mPaused) {
                     break;
                 }
-
+//used for tracking swipe movement
                 mVelocityTracker.addMovement(motionEvent);
+                //this gets the
                 float deltaX = motionEvent.getRawX() - mDownX;
                 float deltaY = motionEvent.getRawY() - mDownY;
+                /**
+                 * Here a check is made on the slope to see how fast
+                 * we are moving the list view in order to start swiping away
+                 */
                 if (Math.abs(deltaX) > mSlop && Math.abs(deltaY) < Math.abs(deltaX) / 2) {
                     mSwiping = true;
                     mSwipingSlop = (deltaX > 0 ? mSlop : -mSlop);
+                    //this code helps prevent the list view from scrolling up and down while I swipe
                     mListView.requestDisallowInterceptTouchEvent(true);
+
 
                     // Cancel ListView's touch (un-highlighting the item)
                     MotionEvent cancelEvent = MotionEvent.obtain(motionEvent);
@@ -211,11 +260,39 @@ public class CountrySwipeToDeleteClass implements View.OnTouchListener {
                 }
 
                 if (mSwiping) {
+
+
+
+                       try{
+                           frameLayout = mDownView.findViewById(R.id.frame_lay);
+                           frameLayout.setVisibility(View.VISIBLE);
+                           frameLayout.setAlpha(1 - Math.max(0f, Math.min(1f,
+                                   1f - Math.abs(deltaX) / mViewWidth)));}catch (NullPointerException nu){
+                           Log.e("This Class","Error as a result of " + nu.getMessage());}
+
+                    //here we set the color of the swipe to purple
+                    mDownView.setBackground(new ColorDrawable(Color.rgb(147, 112,
+                            219)));
+
+
+
+
+
+
+                    //here we swipe our listview back and front depending on how far the swipe is done
                     mDownView.setTranslationX(deltaX - mSwipingSlop);
+                    /**
+                     * here we check for how far it is from the anchor point so
+                     * the farther it is from the starting point the more translucent it becomes
+                     */
                     mDownView.setAlpha(Math.max(0f, Math.min(1f,
                             1f - 2f * Math.abs(deltaX) / mViewWidth)));
+                    //frameLayout.setVisibility(View.VISIBLE);
+
                     return true;
+
                 }
+
                 break;
             }
         }
