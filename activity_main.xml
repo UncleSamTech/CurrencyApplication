@@ -4,16 +4,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/list_view_background"
     android:layout_height="match_parent"
     tools:context="com.currencyapp.samuel.currencyapplication.MainActivity">
     <!--the  list view  used to render our result-->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/frame_lay"
+        android:background="@drawable/ic_action_language"
+        android:visibility="invisible"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:numColumns = "2"
         android:orientation="vertical"
+        android:dividerHeight="@dimen/image_height_margin"
         android:id = "@+id/lv_country"
         android:layout_margin="@dimen/activity_lay_margin"/>
+
+
     <!--the progress bar widget used to show loading indicator-->
 
     <ProgressBar
@@ -30,6 +42,8 @@
         android:layout_centerInParent="true"
         android:fontFamily="sans-serif-smallcaps"
         android:id="@+id/text_view_error_display"/>
+
+
 
 
 
